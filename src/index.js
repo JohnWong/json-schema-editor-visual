@@ -53,6 +53,9 @@ render(
       showEditor={true}
       isMock={false}
       data={''}
+      onOpenImportDialog={e => {
+        console.log('import', e)
+      }}
       onChange={e => {
         console.log('changeValue', e);
       }}
