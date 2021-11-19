@@ -36,7 +36,6 @@ module.exports = (config = {})=>{
   Component.propTypes = {
     data: PropTypes.string,
     onChange: PropTypes.func,
-    onOpenImportDialog: PropTypes.func,
     showEditor: PropTypes.bool
   }
   return Component;

@@ -62,9 +62,6 @@ class jsonSchema extends React.Component {
     this.setState({
       visible: true
     });
-    if (this.props.onOpenImportDialog) {
-      this.props.onOpenImportDialog(true);
-    }
   };
   handleOk = () => {
     if (this.importJsonType !== 'schema') {
@@ -81,15 +78,9 @@ class jsonSchema extends React.Component {
       this.Model.changeEditorSchemaAction({ value: this.jsonSchemaData });
     }
     this.setState({ visible: false });
-    if (this.props.onOpenImportDialog) {
-      this.props.onOpenImportDialog(false);
-    }
   };
   handleCancel = () => {
     this.setState({ visible: false });
-    if (this.props.onOpenImportDialog) {
-      this.props.onOpenImportDialog(false);
-    }
   };
 
   componentWillReceiveProps(nextProps) {
@@ -505,7 +496,6 @@ jsonSchema.propTypes = {
   data: PropTypes.string,
   onChange: PropTypes.func,
   showEditor: PropTypes.bool,
-  onOpenImportDialog: PropTypes.func,
   isMock: PropTypes.bool,
   Model: PropTypes.object
 };
