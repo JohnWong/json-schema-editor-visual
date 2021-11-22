@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, AutoComplete, Icon } from 'antd';
 import PropTypes from 'prop-types';
 const Option = AutoComplete.Option;
-import LocaleProvider from '../LocalProvider/index.js';
+import LocaleProvider from '../LocaleProvider/index.js';
 
 export default class MockSelect extends React.Component {
   constructor(props, context) {

@@ -25,18 +25,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
 const InputGroup = Input.Group;
-import LocaleProvider from '../LocalProvider/index.js';
+import LocaleProvider from '../LocaleProvider/index.js';
 import utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
 
-const mapping = (name, data, showEdit, showAdv) => {
+const mapping = (name, data, showEdit, showAdv, onlySelect, onSelectNode) => {
   switch (data.type) {
     case 'array':
-      return <SchemaArray prefix={name} data={data} showEdit={showEdit} showAdv={showAdv} />;
+      return <SchemaArray prefix={name} data={data} showEdit={showEdit} showAdv={showAdv} onlySelect={onlySelect} onSelectNode={onSelectNode}/>;
       break;
     case 'object':
       let nameArray = [].concat(name, 'properties');
-      return <SchemaObject prefix={nameArray} data={data} showEdit={showEdit} showAdv={showAdv} />;
+      return <SchemaObject prefix={nameArray} data={data} showEdit={showEdit} showAdv={showAdv} onlySelect={onlySelect} onSelectNode={onSelectNode}/>;
       break;
     default:
       return null;
@@ -117,7 +117,7 @@ class SchemaArray extends PureComponent {
   };
 
   render() {
-    const { data, prefix, showEdit, showAdv } = this.props;
+    const { data, prefix, showEdit, showAdv, onlySelect, onSelectNode } = this.props;
     const items = data.items;
     let prefixArray = [].concat(prefix, 'items');
 
@@ -145,7 +145,7 @@ class SchemaArray extends PureComponent {
                   ) : null}
                 </Col>
                 <Col span={22}>
-                  <Input addonAfter={<Checkbox disabled />} disabled value="Items" />
+                  <Input addonAfter={onlySelect ? null : <Checkbox disabled />} disabled value="Items" />
                 </Col>
               </Row>
             </Col>
@@ -155,6 +155,7 @@ class SchemaArray extends PureComponent {
                 className="type-select-style"
                 onChange={this.handleChangeType}
                 value={items.type}
+                disabled={onlySelect}
               >
                 {SCHEMA_TYPE.map((item, index) => {
                   return (
@@ -177,28 +178,30 @@ class SchemaArray extends PureComponent {
             )}
             <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-mock">
               <Input
-                addonAfter={<Icon type="edit" onClick={() => this.handleShowEdit('title')} />}
+                addonAfter={onlySelect ? null : <Icon type="edit" onClick={() => this.handleShowEdit('title')} />}
                 placeholder={LocaleProvider('title')}
                 value={items.title}
                 onChange={this.handleChangeTitle}
+                disabled={onlySelect}
               />
             </Col>
             <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
               <Input
-                addonAfter={<Icon type="edit" onClick={() => this.handleShowEdit('description')} />}
+                addonAfter={onlySelect ? null : <Icon type="edit" onClick={() => this.handleShowEdit('description')} />}
                 placeholder={LocaleProvider('description')}
                 value={items.description}
+                disabled={onlySelect}
                 onChange={this.handleChangeDesc}
               />
             </Col>
             <Col span={this.context.isMock ? 2: 3} className="col-item col-item-setting">
-              <span className="adv-set" onClick={this.handleShowAdv}>
+              {/* <span className="adv-set" onClick={this.handleShowAdv}>
                 <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                   <Icon type="setting" />
                 </Tooltip>
-              </span>
+              </span> */}
 
-              {items.type === 'object' ? (
+              {!onlySelect && items.type === 'object' ? (
                 <span onClick={this.handleAddChildField}>
                   <Tooltip placement="top" title={LocaleProvider('add_child_node')}>
                     <Icon type="plus" className="plus" />
@@ -207,7 +210,7 @@ class SchemaArray extends PureComponent {
               ) : null}
             </Col>
           </Row>
-          <div className="option-formStyle">{mapping(prefixArray, items, showEdit, showAdv)}</div>
+          <div className="option-formStyle">{mapping(prefixArray, items, showEdit, showAdv, onlySelect, onSelectNode)}</div>
         </div>
       )
     );
@@ -289,6 +292,15 @@ class SchemaItem extends PureComponent {
     this.Model.deleteItemAction({ key: nameArray });
     this.Model.enableRequireAction({ prefix, name, required: false });
   };
+
+  // 选择节点
+  handleSelect = () => {
+    let prefix = this.getPrefix();
+    if (this.props.onSelectNode) {
+      this.props.onSelectNode(prefix);
+    }
+  }
+
   /*
   展示备注编辑弹窗
   editorName: 弹窗名称 ['description', 'mock']
@@ -329,7 +341,7 @@ class SchemaItem extends PureComponent {
   };
 
   render() {
-    let { name, data, prefix, showEdit, showAdv } = this.props;
+    let { name, data, prefix, showEdit, showAdv, onlySelect, onSelectNode } = this.props;
     let value = data.properties[name];
     let prefixArray = [].concat(prefix, name);
 
@@ -360,6 +372,7 @@ class SchemaItem extends PureComponent {
               <Col span={22}>
                 <FieldInput
                   addonAfter={
+                    onlySelect ? null : 
                     <Tooltip placement="top" title={LocaleProvider('required')}>
                       <Checkbox
                         onChange={this.handleEnableRequire}
@@ -369,6 +382,7 @@ class SchemaItem extends PureComponent {
                       />
                     </Tooltip>
                   }
+                  disabled={onlySelect}
                   onChange={this.handleChangeName}
                   value={name}
                 />
@@ -382,6 +396,7 @@ class SchemaItem extends PureComponent {
               className="type-select-style"
               onChange={this.handleChangeType}
               value={value.type}
+              disabled={onlySelect}
             >
               {SCHEMA_TYPE.map((item, index) => {
                 return (
@@ -415,33 +430,42 @@ class SchemaItem extends PureComponent {
 
           <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-mock">
             <Input
-              addonAfter={<Icon type="edit" onClick={() => this.handleShowEdit('title')} />}
+              addonAfter={onlySelect ? null : <Icon type="edit" onClick={() => this.handleShowEdit('title')} />}
               placeholder={LocaleProvider('title')}
               value={value.title}
+              disabled={onlySelect}
               onChange={this.handleChangeTitle}
             />
           </Col>
 
           <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
             <Input
-              addonAfter={<Icon type="edit" onClick={() => this.handleShowEdit('description')} />}
+              addonAfter={onlySelect ? null : <Icon type="edit" onClick={() => this.handleShowEdit('description')} />}
               placeholder={LocaleProvider('description')}
               value={value.description}
+              disabled={onlySelect}
               onChange={this.handleChangeDesc}
             />
           </Col>
 
           
           <Col span={this.context.isMock ? 2: 3}  className="col-item col-item-setting">
-            <span className="adv-set" onClick={this.handleShowAdv}>
+            {/* <span className="adv-set" onClick={this.handleShowAdv}>
               <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                 <Icon type="setting" />
               </Tooltip>
-            </span>
-            <span className="delete-item" onClick={this.handleDeleteItem}>
+            </span> */}
+            {onlySelect ? null : <span className="delete-item" onClick={this.handleDeleteItem}>
               <Icon type="close" className="close" />
-            </span>
-            {value.type === 'object' ? (
+            </span>}
+            {onlySelect ? (
+              <span onClick={this.handleSelect}>
+                <Tooltip placement="top" title={LocaleProvider('select_node')}>
+                  <Icon type="check" className="check" />
+                </Tooltip>
+              </span>
+            ) : 
+            value.type === 'object' ? (
               <DropPlus prefix={prefix} name={name} />
             ) : (
               <span onClick={this.handleAddField}>
@@ -452,7 +476,7 @@ class SchemaItem extends PureComponent {
             )}
           </Col>
         </Row>
-        <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv)}</div>
+        <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv, onlySelect, onSelectNode)}</div>
       </div>
     ) : null;
   }
@@ -477,7 +501,7 @@ class SchemaObjectComponent extends Component {
   }
 
   render() {
-    const { data, prefix, showEdit, showAdv } = this.props;
+    const { data, prefix, showEdit, showAdv, onlySelect, onSelectNode } = this.props;
     return (
       <div className="object-style">
         {Object.keys(data.properties).map((name, index) => (
@@ -488,6 +512,8 @@ class SchemaObjectComponent extends Component {
             prefix={prefix}
             showEdit={showEdit}
             showAdv={showAdv}
+            onlySelect={onlySelect}
+            onSelectNode={onSelectNode}
           />
         ))}
       </div>
@@ -536,7 +562,7 @@ DropPlus.contextTypes = {
 };
 
 const SchemaJson = props => {
-  const item = mapping([], props.data, props.showEdit, props.showAdv);
+  const item = mapping([], props.data, props.showEdit, props.showAdv, props.onlySelect, props.onSelectNode);
   return <div className="schema-content">{item}</div>;
 };
 

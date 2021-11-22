@@ -25,6 +25,50 @@ const mock = [
 ];
 
 const JEditor1 = jeditor({mock: mock});
+const schema = {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "number"
+    },
+    "items": {
+      "type": "string"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deviceManufacturer": {
+            "type": "string"
+          },
+          "deviceModel": {
+            "type": "string"
+          },
+          "deviceName": {
+            "type": "string"
+          },
+          "deviceLevel": {
+            "type": "string"
+          },
+          "deviceScore": {
+            "type": "string"
+          },
+          "mtop": {
+            "type": "string"
+          },
+          "pizza": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "success": {
+      "type": "boolean"
+    }
+  }
+}
 
 render(
   <div>
@@ -52,7 +96,11 @@ render(
     <JEditor1
       showEditor={true}
       isMock={false}
-      data={''}
+      onlySelect={true}
+      data={JSON.stringify(schema)}
+      onSelectNode={e => {
+        console.log(e);
+      }}
       onChange={e => {
         console.log('changeValue', e);
       }}

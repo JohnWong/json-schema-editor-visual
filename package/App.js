@@ -30,7 +30,7 @@ import handleSchema from './schema';
 const GenerateSchema = require('generate-schema/src/schemas/json.js');
 const utils = require('./utils');
 import CustomItem from './components/SchemaComponents/SchemaOther.js';
-import LocalProvider from './components/LocalProvider/index.js';
+import LocaleProvider from './components/LocaleProvider/index.js';
 import MockSelect from './components/MockSelect/index.js';
 
 
@@ -118,7 +118,7 @@ class jsonSchema extends React.Component {
   }
 
   alterMsg = () => {
-    // return message.error(LocalProvider('valid_json'));
+    // return message.error(LocaleProvider('valid_json'));
   };
 
   // AceEditor 中的数据
@@ -269,29 +269,34 @@ class jsonSchema extends React.Component {
     } = this.state;
     const { schema } = this.props;
 
+    let showEditor = this.props.showEditor;
+    const onlySelect = this.props.onlySelect;
     let disabled =
       this.props.schema.type === 'object' || this.props.schema.type === 'array' ? false : true;
+    if (onlySelect) {
+      showEditor = false;
+    }
 
     return (
       <div className="json-schema-react-editor">
-        <Button className="import-json-button" type="primary" onClick={this.showModal}>
-          {LocalProvider('import_json')}
-        </Button>
+        {showEditor && (<Button className="import-json-button" type="primary" onClick={this.showModal}>
+          {LocaleProvider('import_json')}
+        </Button>)}
         <Modal
           maskClosable={false}
           visible={visible}
-          title={LocalProvider('import_json')}
+          title={LocaleProvider('import_json')}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           className="json-schema-react-editor-import-modal"
           okText={'ok'}
-          cancelText={LocalProvider('cancel')}
+          cancelText={LocaleProvider('cancel')}
           footer={[
             <Button key="back" onClick={this.handleCancel}>
-              {LocalProvider('cancel')}
+              {LocaleProvider('cancel')}
             </Button>,
             <Button key="submit" type="primary" onClick={this.handleOk}>
-              {LocalProvider('ok')}
+              {LocaleProvider('ok')}
             </Button>
           ]}
         >
@@ -313,10 +318,10 @@ class jsonSchema extends React.Component {
         <Modal
           title={
             <div>
-              {LocalProvider(editorModalName)}
+              {LocaleProvider(editorModalName)}
               &nbsp;
               {editorModalName === 'mock' && (
-                <Tooltip title={LocalProvider('mockLink')}>
+                <Tooltip title={LocaleProvider('mockLink')}>
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
@@ -332,12 +337,12 @@ class jsonSchema extends React.Component {
           visible={editVisible}
           onOk={() => this.handleEditOk(editorModalName)}
           onCancel={this.handleEditCancel}
-          okText={LocalProvider('ok')}
-          cancelText={LocalProvider('cancel')}
+          okText={LocaleProvider('ok')}
+          cancelText={LocaleProvider('cancel')}
         >
           <TextArea
             value={this.state[editorModalName]}
-            placeholder={LocalProvider(editorModalName)}
+            placeholder={LocaleProvider(editorModalName)}
             onChange={e => this.changeDesc(e.target.value, editorModalName)}
             autosize={{ minRows: 6, maxRows: 10 }}
           />
@@ -345,14 +350,14 @@ class jsonSchema extends React.Component {
 
         {advVisible && (
           <Modal
-            title={LocalProvider('adv_setting')}
+            title={LocaleProvider('adv_setting')}
             maskClosable={false}
             visible={advVisible}
             onOk={this.handleAdvOk}
             onCancel={this.handleAdvCancel}
-            okText={LocalProvider('ok')}
+            okText={LocaleProvider('ok')}
             width={780}
-            cancelText={LocalProvider('cancel')}
+            cancelText={LocaleProvider('cancel')}
             className="json-schema-react-editor-adv-modal"
           >
             <CustomItem data={JSON.stringify(this.state.curItemCustomValue, null, 2)} />
@@ -360,7 +365,7 @@ class jsonSchema extends React.Component {
         )}
 
         <Row>
-          {this.props.showEditor && (
+          {showEditor && (
             <Col span={8}>
               <AceEditor
                 className="pretty-editor"
@@ -370,7 +375,7 @@ class jsonSchema extends React.Component {
               />
             </Col>
           )}
-          <Col span={this.props.showEditor ? 16 : 24} className="wrapper object-style">
+          <Col span={showEditor ? 16 : 24} className="wrapper object-style">
             <Row type="flex" align="middle">
               <Col span={8} className="col-item name-item col-item-name">
                 <Row type="flex" justify="space-around" align="middle">
@@ -389,11 +394,11 @@ class jsonSchema extends React.Component {
                     <Input
                       addonAfter={
                         <Tooltip placement="top" title={'checked_all'}>
-                          <Checkbox
+                          {onlySelect ? null : <Checkbox
                             checked={checked}
                             disabled={disabled}
                             onChange={e => this.changeCheckBox(e.target.checked)}
-                          />
+                          />}
                         </Tooltip>
                       }
                       disabled
@@ -407,6 +412,7 @@ class jsonSchema extends React.Component {
                   className="type-select-style"
                   onChange={e => this.changeType(`type`, e)}
                   value={schema.type || 'object'}
+                  disabled={onlySelect}
                 >
                   {SCHEMA_TYPE.map((item, index) => {
                     return (
@@ -429,7 +435,7 @@ class jsonSchema extends React.Component {
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-mock">
                 <Input
                   addonAfter={
-                    <Icon
+                    onlySelect ? null : <Icon
                       type="edit"
                       onClick={() =>
                         this.showEdit([], 'title', this.props.schema.title)
@@ -438,13 +444,14 @@ class jsonSchema extends React.Component {
                   }
                   placeholder={'Title'}
                   value={this.props.schema.title}
+                  disabled={onlySelect}
                   onChange={e => this.changeValue(['title'], e.target.value)}
                 />
               </Col>
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">
                 <Input
                   addonAfter={
-                    <Icon
+                    onlySelect ? null : <Icon
                       type="edit"
                       onClick={() =>
                         this.showEdit([], 'description', this.props.schema.description)
@@ -453,18 +460,19 @@ class jsonSchema extends React.Component {
                   }
                   placeholder={'description'}
                   value={schema.description}
+                  disabled={onlySelect}
                   onChange={e => this.changeValue(['description'], e.target.value)}
                 />
               </Col>
               <Col span={2} className="col-item col-item-setting">
-                <span className="adv-set" onClick={() => this.showAdv([], this.props.schema)}>
-                  <Tooltip placement="top" title={LocalProvider('adv_setting')}>
+                {/* <span className="adv-set" onClick={() => this.showAdv([], this.props.schema)}>
+                  <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                     <Icon type="setting" />
                   </Tooltip>
-                </span>
-                {schema.type === 'object' ? (
+                </span> */}
+                {onlySelect ? null : schema.type === 'object' ? (
                   <span onClick={() => this.addChildField('properties')}>
-                    <Tooltip placement="top" title={LocalProvider('add_child_node')}>
+                    <Tooltip placement="top" title={LocaleProvider('add_child_node')}>
                       <Icon type="plus" className="plus" />
                     </Tooltip>
                   </span>
@@ -476,6 +484,8 @@ class jsonSchema extends React.Component {
                 data={this.props.schema}
                 showEdit={this.showEdit}
                 showAdv={this.showAdv}
+                onlySelect={onlySelect}
+                onSelectNode={this.props.onSelectNode}
               />
             )}
           </Col>
@@ -495,7 +505,9 @@ jsonSchema.childContextTypes = {
 jsonSchema.propTypes = {
   data: PropTypes.string,
   onChange: PropTypes.func,
+  onSelectNode: PropTypes.func,
   showEditor: PropTypes.bool,
+  onlySelect: PropTypes.bool,
   isMock: PropTypes.bool,
   Model: PropTypes.object
 };

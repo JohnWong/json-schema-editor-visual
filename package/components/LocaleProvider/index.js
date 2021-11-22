@@ -11,6 +11,7 @@ const langs = {
     'description':'Description',
     "adv_setting": "Advanced Settings",
     "add_child_node": "Add child node",
+    "select_node": "Select node",
     'add_sibling_node': 'Add sibling nodes',
     'add_node':'Add sibling/child nodes',
     'child_node': 'Child node',
@@ -46,6 +47,7 @@ const langs = {
     'description':'备注',
     'adv_setting': '高级设置',
     "add_child_node": "添加子节点",
+    "select_node": "选择节点",
     'add_sibling_node': '添加兄弟节点',
     'add_node':'添加兄弟/子节点',
     'child_node': '子节点',
@@ -81,7 +83,7 @@ export default (message) => {
 
 
 
-// exports.LocalProvider = (props)=>{
+// exports.LocaleProvider = (props)=>{
 //   console.log(langs[utils.lang][props.message])
 //   return <span>{langs[utils.lang][props.message]}</span>
 //   // return langs[utils.lang][props.message]

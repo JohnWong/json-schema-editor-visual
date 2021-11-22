@@ -24,7 +24,7 @@ import PropTypes from 'prop-types';
 import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
 const Option = Select.Option;
 import AceEditor from '../AceEditor/AceEditor.js';
-import LocalProvider from '../LocalProvider/index.js';
+import LocaleProvider from '../LocaleProvider/index.js';
 
 const changeOtherValue = (value, name, data, change) => {
   data[name] = value;
@@ -83,15 +83,15 @@ class SchemaString extends PureComponent {
     const { data } = this.props;
     return (
       <div>
-        <div className="default-setting">{LocalProvider('base_setting')}</div>
+        <div className="default-setting">{LocaleProvider('base_setting')}</div>
         <Row className="other-row" type="flex" align="middle">
           <Col span={4} className="other-label">
-            {LocalProvider('default')}：
+            {LocaleProvider('default')}：
           </Col>
           <Col span={20}>
             <Input
               value={data.default}
-              placeholder={LocalProvider('default')}
+              placeholder={LocaleProvider('default')}
               onChange={e => this.changeOtherValue(e.target.value, 'default', data)}
             />
           </Col>
@@ -100,7 +100,7 @@ class SchemaString extends PureComponent {
           <Col span={12}>
             <Row type="flex" align="middle">
               <Col span={8} className="other-label">
-                {LocalProvider('minLength')}：
+                {LocaleProvider('minLength')}：
               </Col>
               <Col span={16}>
                 <InputNumber
@@ -114,7 +114,7 @@ class SchemaString extends PureComponent {
           <Col span={12}>
             <Row type="flex" align="middle">
               <Col span={8} className="other-label">
-                {LocalProvider('maxLength')}：
+                {LocaleProvider('maxLength')}：
               </Col>
               <Col span={16}>
                 <InputNumber
@@ -130,7 +130,7 @@ class SchemaString extends PureComponent {
           <Col span={4} className="other-label">
             <span>
               Pattern&nbsp;
-              <Tooltip title={LocalProvider('pattern')}>
+              <Tooltip title={LocaleProvider('pattern')}>
                 <Icon type="question-circle-o" style={{ width: '10px' }} />
               </Tooltip>
               &nbsp; :
@@ -147,7 +147,7 @@ class SchemaString extends PureComponent {
         <Row className="other-row" type="flex" align="middle">
           <Col span={4} className="other-label">
             <span>
-              {LocalProvider('enum')}
+              {LocaleProvider('enum')}
               <Checkbox
                 checked={this.state.checked}
                 onChange={e => this.onChangeCheckBox(e.target.checked, data)}
@@ -159,7 +159,7 @@ class SchemaString extends PureComponent {
             <TextArea
               value={data.enum && data.enum.length && data.enum.join('\n')}
               disabled={!this.state.checked}
-              placeholder={LocalProvider('enum_msg')}
+              placeholder={LocaleProvider('enum_msg')}
               autosize={{ minRows: 2, maxRows: 6 }}
               onChange={e => {
                 this.changeEnumOtherValue(e.target.value, data);
@@ -170,13 +170,13 @@ class SchemaString extends PureComponent {
         {this.state.checked && (
           <Row className="other-row" type="flex" align="middle">
             <Col span={4} className="other-label">
-              <span>{LocalProvider('enum_desc')}</span>
+              <span>{LocaleProvider('enum_desc')}</span>
             </Col>
             <Col span={20}>
               <TextArea
                 value={data.enumDesc}
                 disabled={!this.state.checked}
-                placeholder={LocalProvider('enum_desc_msg')}
+                placeholder={LocaleProvider('enum_desc_msg')}
                 autosize={{ minRows: 2, maxRows: 6 }}
                 onChange={e => {
                   this.changeEnumDescOtherValue(e.target.value, data);
@@ -278,15 +278,15 @@ class SchemaNumber extends PureComponent {
     const { data } = this.props;
     return (
       <div>
-        <div className="default-setting">{LocalProvider('base_setting')}</div>
+        <div className="default-setting">{LocaleProvider('base_setting')}</div>
         <Row className="other-row" type="flex" align="middle">
           <Col span={4} className="other-label">
-            {LocalProvider('default')}：
+            {LocaleProvider('default')}：
           </Col>
           <Col span={20}>
             <Input
               value={data.default}
-              placeholder={LocalProvider('default')}
+              placeholder={LocaleProvider('default')}
               onChange={e =>
                 changeOtherValue(e.target.value, 'default', data, this.context.changeCustomValue)
               }
@@ -299,7 +299,7 @@ class SchemaNumber extends PureComponent {
               <Col span={13} className="other-label">
                 <span>
                   exclusiveMinimum&nbsp;
-                  <Tooltip title={LocalProvider('exclusiveMinimum')}>
+                  <Tooltip title={LocaleProvider('exclusiveMinimum')}>
                     <Icon type="question-circle-o" style={{ width: '10px' }} />
                   </Tooltip>
                   &nbsp; :
@@ -321,7 +321,7 @@ class SchemaNumber extends PureComponent {
               <Col span={13} className="other-label">
                 <span>
                   exclusiveMaximum&nbsp;
-                  <Tooltip title={LocalProvider('exclusiveMaximum')}>
+                  <Tooltip title={LocaleProvider('exclusiveMaximum')}>
                     <Icon type="question-circle-o" style={{ width: '10px' }} />
                   </Tooltip>
                   &nbsp; :
@@ -343,12 +343,12 @@ class SchemaNumber extends PureComponent {
           <Col span={12}>
             <Row type="flex" align="middle">
               <Col span={8} className="other-label">
-                {LocalProvider('minimum')}：
+                {LocaleProvider('minimum')}：
               </Col>
               <Col span={16}>
                 <InputNumber
                   value={data.minimum}
-                  placeholder={LocalProvider('minimum')}
+                  placeholder={LocaleProvider('minimum')}
                   onChange={e =>
                     changeOtherValue(e, 'minimum', data, this.context.changeCustomValue)
                   }
@@ -359,12 +359,12 @@ class SchemaNumber extends PureComponent {
           <Col span={12}>
             <Row type="flex" align="middle">
               <Col span={8} className="other-label">
-                {LocalProvider('maximum')}：
+                {LocaleProvider('maximum')}：
               </Col>
               <Col span={16}>
                 <InputNumber
                   value={data.maximum}
-                  placeholder={LocalProvider('maximum')}
+                  placeholder={LocaleProvider('maximum')}
                   onChange={e =>
                     changeOtherValue(e, 'maximum', data, this.context.changeCustomValue)
                   }
@@ -376,7 +376,7 @@ class SchemaNumber extends PureComponent {
         <Row className="other-row" type="flex" align="middle">
           <Col span={4} className="other-label">
             <span>
-              {LocalProvider('enum')}
+              {LocaleProvider('enum')}
               <Checkbox
                 checked={this.state.checked}
                 onChange={e => this.onChangeCheckBox(e.target.checked, data)}
@@ -389,7 +389,7 @@ class SchemaNumber extends PureComponent {
               // value={data.enum && data.enum.length && data.enum.join('\n')}
               value={this.state.enum}
               disabled={!this.state.checked}
-              placeholder={LocalProvider('enum_msg')}
+              placeholder={LocaleProvider('enum_msg')}
               autosize={{ minRows: 2, maxRows: 6 }}
               onChange={e => {
                 this.changeEnumOtherValue(e.target.value, data);
@@ -400,13 +400,13 @@ class SchemaNumber extends PureComponent {
         {this.state.checked && (
           <Row className="other-row" type="flex" align="middle">
             <Col span={4} className="other-label">
-              <span>{LocalProvider('enum_desc')} ：</span>
+              <span>{LocaleProvider('enum_desc')} ：</span>
             </Col>
             <Col span={20}>
               <TextArea
                 value={data.enumDesc}
                 disabled={!this.state.checked}
-                placeholder={LocalProvider('enum_desc_msg')}
+                placeholder={LocaleProvider('enum_desc_msg')}
                 autosize={{ minRows: 2, maxRows: 6 }}
                 onChange={e => {
                   this.changeEnumDescOtherValue(e.target.value, data);
@@ -429,10 +429,10 @@ const SchemaBoolean = (props, context) => {
   let value = _.isUndefined(data.default) ? '' : data.default ? 'true' : 'false';
   return (
     <div>
-      <div className="default-setting">{LocalProvider('base_setting')}</div>
+      <div className="default-setting">{LocaleProvider('base_setting')}</div>
       <Row className="other-row" type="flex" align="middle">
         <Col span={4} className="other-label">
-          {LocalProvider('default')}：
+          {LocaleProvider('default')}：
         </Col>
         <Col span={20}>
           <Select
@@ -464,12 +464,12 @@ const SchemaArray = (props, context) => {
   const { data } = props;
   return (
     <div>
-      <div className="default-setting">{LocalProvider('base_setting')}</div>
+      <div className="default-setting">{LocaleProvider('base_setting')}</div>
       <Row className="other-row" type="flex" align="middle">
         <Col span={6} className="other-label">
           <span>
             uniqueItems&nbsp;
-            <Tooltip title={LocalProvider('unique_items')}>
+            <Tooltip title={LocaleProvider('unique_items')}>
               <Icon type="question-circle-o" style={{ width: '10px' }} />
             </Tooltip>
             &nbsp; :
@@ -487,7 +487,7 @@ const SchemaArray = (props, context) => {
         <Col span={12}>
           <Row type="flex" align="middle">
             <Col span={12} className="other-label">
-              {LocalProvider('min_items')}：
+              {LocaleProvider('min_items')}：
             </Col>
             <Col span={12}>
               <InputNumber
@@ -501,7 +501,7 @@ const SchemaArray = (props, context) => {
         <Col span={12}>
           <Row type="flex" align="middle">
             <Col span={12} className="other-label">
-              {LocalProvider('max_items')}：
+              {LocaleProvider('max_items')}：
             </Col>
             <Col span={12}>
               <InputNumber
@@ -543,7 +543,7 @@ const CustomItem = (props, context) => {
   return (
     <div>
       <div>{optionForm}</div>
-      <div className="default-setting">{LocalProvider('all_setting')}</div>
+      <div className="default-setting">{LocaleProvider('all_setting')}</div>
       <AceEditor
         data={data}
         mode="json"
