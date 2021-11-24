@@ -96,7 +96,8 @@ render(
     <JEditor1
       showEditor={true}
       isMock={false}
-      onlySelect={true}
+      // selectMode={true}
+      readonlyTitle='123'
       data={JSON.stringify(schema)}
       onSelectNode={e => {
         console.log(e);

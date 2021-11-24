@@ -53,6 +53,7 @@ class jsonSchema extends React.Component {
       mock: ''
     };
     this.Model = this.props.Model.schema;
+    this.Model.setReadonlyTitle(props.readonlyTitle)
     this.jsonSchemaData = null;
     this.jsonData = null;
   }
@@ -270,10 +271,10 @@ class jsonSchema extends React.Component {
     const { schema } = this.props;
 
     let showEditor = this.props.showEditor;
-    const onlySelect = this.props.onlySelect;
+    const selectMode = this.props.selectMode;
     let disabled =
       this.props.schema.type === 'object' || this.props.schema.type === 'array' ? false : true;
-    if (onlySelect) {
+    if (selectMode) {
       showEditor = false;
     }
 
@@ -394,7 +395,7 @@ class jsonSchema extends React.Component {
                     <Input
                       addonAfter={
                         <Tooltip placement="top" title={'checked_all'}>
-                          {onlySelect ? null : <Checkbox
+                          {selectMode ? null : <Checkbox
                             checked={checked}
                             disabled={disabled}
                             onChange={e => this.changeCheckBox(e.target.checked)}
@@ -412,7 +413,7 @@ class jsonSchema extends React.Component {
                   className="type-select-style"
                   onChange={e => this.changeType(`type`, e)}
                   value={schema.type || 'object'}
-                  disabled={onlySelect}
+                  disabled={selectMode}
                 >
                   {SCHEMA_TYPE.map((item, index) => {
                     return (
@@ -435,7 +436,7 @@ class jsonSchema extends React.Component {
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-mock">
                 <Input
                   addonAfter={
-                    onlySelect ? null : <Icon
+                    selectMode || this.props.readonlyTitle ? null : <Icon
                       type="edit"
                       onClick={() =>
                         this.showEdit([], 'title', this.props.schema.title)
@@ -444,14 +445,14 @@ class jsonSchema extends React.Component {
                   }
                   placeholder={'Title'}
                   value={this.props.schema.title}
-                  disabled={onlySelect}
+                  disabled={selectMode || !!this.props.readonlyTitle}
                   onChange={e => this.changeValue(['title'], e.target.value)}
                 />
               </Col>
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">
                 <Input
                   addonAfter={
-                    onlySelect ? null : <Icon
+                    selectMode ? null : <Icon
                       type="edit"
                       onClick={() =>
                         this.showEdit([], 'description', this.props.schema.description)
@@ -460,7 +461,7 @@ class jsonSchema extends React.Component {
                   }
                   placeholder={'description'}
                   value={schema.description}
-                  disabled={onlySelect}
+                  disabled={selectMode}
                   onChange={e => this.changeValue(['description'], e.target.value)}
                 />
               </Col>
@@ -470,7 +471,7 @@ class jsonSchema extends React.Component {
                     <Icon type="setting" />
                   </Tooltip>
                 </span> */}
-                {onlySelect ? null : schema.type === 'object' ? (
+                {selectMode ? null : schema.type === 'object' ? (
                   <span onClick={() => this.addChildField('properties')}>
                     <Tooltip placement="top" title={LocaleProvider('add_child_node')}>
                       <Icon type="plus" className="plus" />
@@ -484,7 +485,7 @@ class jsonSchema extends React.Component {
                 data={this.props.schema}
                 showEdit={this.showEdit}
                 showAdv={this.showAdv}
-                onlySelect={onlySelect}
+                selectMode={selectMode}
                 onSelectNode={this.props.onSelectNode}
               />
             )}
@@ -507,7 +508,8 @@ jsonSchema.propTypes = {
   onChange: PropTypes.func,
   onSelectNode: PropTypes.func,
   showEditor: PropTypes.bool,
-  onlySelect: PropTypes.bool,
+  selectMode: PropTypes.bool,
+  readonlyTitle: PropTypes.string,
   isMock: PropTypes.bool,
   Model: PropTypes.object
 };

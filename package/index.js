@@ -37,7 +37,8 @@ module.exports = (config = {})=>{
     data: PropTypes.string,
     onChange: PropTypes.func,
     showEditor: PropTypes.bool,
-    onlySelect: PropTypes.bool,
+    selectMode: PropTypes.bool,
+    readonlyTitle: PropTypes.string,
   }
   return Component;
 
