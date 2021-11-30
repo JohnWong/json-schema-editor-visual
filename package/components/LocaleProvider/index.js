@@ -36,7 +36,8 @@ const langs = {
     'enum_desc_msg': 'enum description',
     'required': 'required',
     'mock': 'mock',
-    'mockLink': 'Help'
+    'mockLink': 'Help',
+    'select_node': 'Select Node'
   },
   zh_CN: {
     'title': '标题',
@@ -72,7 +73,8 @@ const langs = {
     'enum_desc_msg': '备注描述信息',
     'required': '是否必须',
     'mock': 'mock',
-    'mockLink': '查看文档'
+    'mockLink': '查看文档',
+    'select_node': '选择节点'
   }
 }
 
