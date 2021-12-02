@@ -1,7 +1,8 @@
 const JSONPATH_JOIN_CHAR = '.';
-exports.JSONPATH_JOIN_CHAR = JSONPATH_JOIN_CHAR;
-exports.lang = 'en_US';
-exports.format = [
+let utils = {};
+utils.JSONPATH_JOIN_CHAR = JSONPATH_JOIN_CHAR;
+utils.lang = 'en_US';
+utils.format = [
   { name: 'date-time' },
   { name: 'date' },
   { name: 'email' },
@@ -11,8 +12,8 @@ exports.format = [
   { name: 'uri' }
 ];
 const _ = require('underscore');
-exports.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'integer'];
-exports.defaultSchema = {
+utils.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'integer'];
+utils.defaultSchema = {
   string: {
     type: 'string'
   },
@@ -41,7 +42,7 @@ exports.defaultSchema = {
 // 请在 constructor 里使用:
 
 // this.func = debounce(this.func, 400);
-exports.debounce = (func, wait) => {
+utils.debounce = (func, wait) => {
   let timeout;
   return function() {
     clearTimeout(timeout);
@@ -57,9 +58,9 @@ function getData(state, keys) {
   return curState;
 }
 
-exports.getData = getData;
+utils.getData = getData;
 
-exports.setData = function(state, keys, value) {
+utils.setData = function(state, keys, value) {
   let curState = state;
   for (let i = 0; i < keys.length - 1; i++) {
     curState = curState[keys[i]];
@@ -67,7 +68,7 @@ exports.setData = function(state, keys, value) {
   curState[keys[keys.length - 1]] = value;
 };
 
-exports.deleteData = function(state, keys) {
+utils.deleteData = function(state, keys) {
   let curState = state;
   for (let i = 0; i < keys.length - 1; i++) {
     curState = curState[keys[i]];
@@ -76,14 +77,14 @@ exports.deleteData = function(state, keys) {
   delete curState[keys[keys.length - 1]];
 };
 
-exports.getParentKeys = function(keys) {
+utils.getParentKeys = function(keys) {
   if (keys.length === 1) return [];
   let arr = [].concat(keys);
   arr.splice(keys.length - 1, 1);
   return arr;
 };
 
-exports.clearSomeFields = function(keys, data) {
+utils.clearSomeFields = function(keys, data) {
   const newData = Object.assign({}, data);
   keys.forEach(key => {
     delete newData[key];
@@ -127,7 +128,7 @@ function handleObject(properties, checked) {
   }
 }
 
-exports.handleSchemaRequired = handleSchemaRequired;
+utils.handleSchemaRequired = handleSchemaRequired;
 
 function cloneObject(obj) {
   if (typeof obj === 'object') {
@@ -149,4 +150,6 @@ function cloneObject(obj) {
   }
 }
 
-exports.cloneObject = cloneObject;
+utils.cloneObject = cloneObject;
+
+export default utils;

@@ -78,4 +78,4 @@ function run(options) {
   return mockEditor;
 }
 
-module.exports = run;
+export default run;

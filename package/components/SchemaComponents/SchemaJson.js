@@ -23,7 +23,6 @@ import './schemaJson.css';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
 const InputGroup = Input.Group;
 import LocaleProvider from '../LocaleProvider/index.js';
 import utils from '../../utils';
@@ -121,7 +120,7 @@ class SchemaArray extends PureComponent {
     const items = data.items;
     let prefixArray = [].concat(prefix, 'items');
 
-    let prefixArrayStr = [].concat(prefixArray, 'properties').join(JSONPATH_JOIN_CHAR);
+    let prefixArrayStr = [].concat(prefixArray, 'properties').join(utils.JSONPATH_JOIN_CHAR);
     let showIcon = this.context.getOpenValue([prefixArrayStr]);
     return (
       !_.isUndefined(data.items) && (
@@ -157,7 +156,7 @@ class SchemaArray extends PureComponent {
                 value={items.type}
                 disabled={selectMode}
               >
-                {SCHEMA_TYPE.map((item, index) => {
+                {utils.SCHEMA_TYPE.map((item, index) => {
                   return (
                     <Option value={item} key={index}>
                       {item}
@@ -345,8 +344,8 @@ class SchemaItem extends PureComponent {
     let value = data.properties[name];
     let prefixArray = [].concat(prefix, name);
 
-    let prefixStr = prefix.join(JSONPATH_JOIN_CHAR);
-    let prefixArrayStr = [].concat(prefixArray, 'properties').join(JSONPATH_JOIN_CHAR);
+    let prefixStr = prefix.join(utils.JSONPATH_JOIN_CHAR);
+    let prefixArrayStr = [].concat(prefixArray, 'properties').join(utils.JSONPATH_JOIN_CHAR);
     let show = this.context.getOpenValue([prefixStr]);
     let showIcon = this.context.getOpenValue([prefixArrayStr]);
     return show ? (
@@ -398,7 +397,7 @@ class SchemaItem extends PureComponent {
               value={value.type}
               disabled={selectMode}
             >
-              {SCHEMA_TYPE.map((item, index) => {
+              {utils.SCHEMA_TYPE.map((item, index) => {
                 return (
                   <Option value={item} key={index}>
                     {item}

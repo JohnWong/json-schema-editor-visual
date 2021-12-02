@@ -8,7 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
   window.Perf = require('react-addons-perf');
 }
 //import '../dist/main.css'
-const jeditor = require('../package/index.js');
+import jeditor from '../package/index.js'
+
 const mock = [
   { name: '字符串', mock: '@string' },
   { name: '自然数', mock: '@natural' },
