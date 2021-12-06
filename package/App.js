@@ -53,6 +53,7 @@ class jsonSchema extends React.Component {
     };
     this.Model = this.props.Model.schema;
     this.Model.setReadonlyTitle(props.readonlyTitle)
+    this.Model.setReadonlyDescription(props.readonlyDescription)
     this.jsonSchemaData = null;
     this.jsonData = null;
   }
@@ -451,7 +452,7 @@ class jsonSchema extends React.Component {
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">
                 <Input
                   addonAfter={
-                    selectMode ? null : <Icon
+                    selectMode || this.props.readonlyDescription ? null : <Icon
                       type="edit"
                       onClick={() =>
                         this.showEdit([], 'description', this.props.schema.description)
@@ -460,7 +461,7 @@ class jsonSchema extends React.Component {
                   }
                   placeholder={'description'}
                   value={schema.description}
-                  disabled={selectMode}
+                  disabled={selectMode || !!this.props.readonlyDescription}
                   onChange={e => this.changeValue(['description'], e.target.value)}
                 />
               </Col>
@@ -509,6 +510,7 @@ jsonSchema.propTypes = {
   showEditor: PropTypes.bool,
   selectMode: PropTypes.bool,
   readonlyTitle: PropTypes.string,
+  readonlyDescription: PropTypes.string,
   isMock: PropTypes.bool,
   Model: PropTypes.object
 };

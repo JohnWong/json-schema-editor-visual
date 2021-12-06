@@ -6,6 +6,7 @@ import handleSchema from '../schema.js';
 export default {
   state: {
     readonlyTitle: null,
+    readonlyDescription: null,
     data: {
       title: '',
       type: 'object',
@@ -21,9 +22,16 @@ export default {
     state.readonlyTitle = title;
   },
 
+  setReadonlyDescription: function(state, description) {
+    state.readonlyDescription = description;
+  },
+
   changeEditorSchemaAction: function(state, action) {
     if (state.readonlyTitle) {
       action.value.title = state.readonlyTitle;
+    }
+    if (state.readonlyDescription) {
+      action.value.description = state.readonlyDescription;
     }
     handleSchema(action.value);
     state.data = action.value;

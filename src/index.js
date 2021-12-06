@@ -99,6 +99,7 @@ render(
       isMock={false}
       // selectMode={true}
       readonlyTitle='123'
+      readonlyDescription='readonlyDescription-00'
       data={JSON.stringify(schema)}
       onSelectNode={e => {
         console.log(e);

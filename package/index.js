@@ -39,6 +39,7 @@ export default (config = {})=>{
     showEditor: PropTypes.bool,
     selectMode: PropTypes.bool,
     readonlyTitle: PropTypes.string,
+    readonlyDescription: PropTypes.string,
   }
   return Component;
 
