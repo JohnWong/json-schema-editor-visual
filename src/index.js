@@ -34,7 +34,15 @@ const schema = {
       "type": "number"
     },
     "items": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "item0": {
+          "type": "string"
+        },
+        "item1": {
+          "type": "string"
+        }
+      }
     },
     "data": {
       "type": "array",
@@ -97,7 +105,8 @@ render(
     <JEditor1
       showEditor={true}
       isMock={false}
-      // selectMode={true}
+      selectMode={true}
+      selectTypes={['string', 'number', 'boolean', 'integer']}
       readonlyTitle='123'
       readonlyDescription='readonlyDescription-00'
       data={JSON.stringify(schema)}

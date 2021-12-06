@@ -486,6 +486,7 @@ class jsonSchema extends React.Component {
                 showEdit={this.showEdit}
                 showAdv={this.showAdv}
                 selectMode={selectMode}
+                selectTypes={this.props.selectTypes}
                 onSelectNode={this.props.onSelectNode}
               />
             )}
@@ -509,6 +510,7 @@ jsonSchema.propTypes = {
   onSelectNode: PropTypes.func,
   showEditor: PropTypes.bool,
   selectMode: PropTypes.bool,
+  selectTypes: PropTypes.arrayOf(PropTypes.string),
   readonlyTitle: PropTypes.string,
   readonlyDescription: PropTypes.string,
   isMock: PropTypes.bool,

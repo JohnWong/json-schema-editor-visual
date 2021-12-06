@@ -28,14 +28,28 @@ import LocaleProvider from '../LocaleProvider/index.js';
 import utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
 
-const mapping = (name, data, showEdit, showAdv, selectMode, onSelectNode) => {
+const mapping = (name, data, showEdit, showAdv, selectMode, onSelectNode, selectTypes) => {
   switch (data.type) {
     case 'array':
-      return <SchemaArray prefix={name} data={data} showEdit={showEdit} showAdv={showAdv} selectMode={selectMode} onSelectNode={onSelectNode}/>;
+      return <SchemaArray 
+        prefix={name}
+        data={data}
+        showEdit={showEdit}
+        showAdv={showAdv}
+        selectMode={selectMode}
+        onSelectNode={onSelectNode}
+        selectTypes={selectTypes}/>;
       break;
     case 'object':
       let nameArray = [].concat(name, 'properties');
-      return <SchemaObject prefix={nameArray} data={data} showEdit={showEdit} showAdv={showAdv} selectMode={selectMode} onSelectNode={onSelectNode}/>;
+      return <SchemaObject
+        prefix={nameArray}
+        data={data}
+        showEdit={showEdit}
+        showAdv={showAdv}
+        selectMode={selectMode}
+        onSelectNode={onSelectNode}
+        selectTypes={selectTypes}/>;
       break;
     default:
       return null;
@@ -115,8 +129,16 @@ class SchemaArray extends PureComponent {
     this.props.showAdv(this.getPrefix(), this.props.data.items);
   };
 
+  // 选择节点
+  handleSelect = () => {
+    let prefix = this.getPrefix();
+    if (this.props.onSelectNode) {
+      this.props.onSelectNode(prefix);
+    }
+  }
+
   render() {
-    const { data, prefix, showEdit, showAdv, selectMode, onSelectNode } = this.props;
+    const { data, prefix, showEdit, showAdv, selectMode, onSelectNode, selectTypes } = this.props;
     const items = data.items;
     let prefixArray = [].concat(prefix, 'items');
 
@@ -199,8 +221,13 @@ class SchemaArray extends PureComponent {
                   <Icon type="setting" />
                 </Tooltip>
               </span> */}
-
-              {!selectMode && items.type === 'object' ? (
+              {selectMode ? (!selectTypes || selectTypes.includes(items.type) ? (
+                <span onClick={this.handleSelect}>
+                  <Tooltip placement="top" title={LocaleProvider('select_node')}>
+                    <Icon type="check" className="check" />
+                  </Tooltip>
+                </span>
+              ) : null) : items.type === 'object' ? (
                 <span onClick={this.handleAddChildField}>
                   <Tooltip placement="top" title={LocaleProvider('add_child_node')}>
                     <Icon type="plus" className="plus" />
@@ -209,7 +236,7 @@ class SchemaArray extends PureComponent {
               ) : null}
             </Col>
           </Row>
-          <div className="option-formStyle">{mapping(prefixArray, items, showEdit, showAdv, selectMode, onSelectNode)}</div>
+          <div className="option-formStyle">{mapping(prefixArray, items, showEdit, showAdv, selectMode, onSelectNode, selectTypes)}</div>
         </div>
       )
     );
@@ -340,7 +367,7 @@ class SchemaItem extends PureComponent {
   };
 
   render() {
-    let { name, data, prefix, showEdit, showAdv, selectMode, onSelectNode } = this.props;
+    let { name, data, prefix, showEdit, showAdv, selectMode, onSelectNode, selectTypes } = this.props;
     let value = data.properties[name];
     let prefixArray = [].concat(prefix, name);
 
@@ -457,13 +484,13 @@ class SchemaItem extends PureComponent {
             {selectMode ? null : <span className="delete-item" onClick={this.handleDeleteItem}>
               <Icon type="close" className="close" />
             </span>}
-            {selectMode ? (
+            {selectMode ? ( !selectTypes || selectTypes.includes(value.type) ? (
               <span onClick={this.handleSelect}>
                 <Tooltip placement="top" title={LocaleProvider('select_node')}>
                   <Icon type="check" className="check" />
                 </Tooltip>
               </span>
-            ) : 
+            ) : null ) : 
             value.type === 'object' ? (
               <DropPlus prefix={prefix} name={name} />
             ) : (
@@ -475,7 +502,7 @@ class SchemaItem extends PureComponent {
             )}
           </Col>
         </Row>
-        <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv, selectMode, onSelectNode)}</div>
+        <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv, selectMode, onSelectNode, selectTypes)}</div>
       </div>
     ) : null;
   }
@@ -500,7 +527,7 @@ class SchemaObjectComponent extends Component {
   }
 
   render() {
-    const { data, prefix, showEdit, showAdv, selectMode, onSelectNode } = this.props;
+    const { data, prefix, showEdit, showAdv, selectMode, onSelectNode, selectTypes } = this.props;
     return (
       <div className="object-style">
         {Object.keys(data.properties).map((name, index) => (
@@ -513,6 +540,7 @@ class SchemaObjectComponent extends Component {
             showAdv={showAdv}
             selectMode={selectMode}
             onSelectNode={onSelectNode}
+            selectTypes={selectTypes}
           />
         ))}
       </div>
@@ -561,7 +589,7 @@ DropPlus.contextTypes = {
 };
 
 const SchemaJson = props => {
-  const item = mapping([], props.data, props.showEdit, props.showAdv, props.selectMode, props.onSelectNode);
+  const item = mapping([], props.data, props.showEdit, props.showAdv, props.selectMode, props.onSelectNode, props.selectTypes);
   return <div className="schema-content">{item}</div>;
 };
 

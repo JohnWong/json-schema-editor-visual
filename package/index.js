@@ -36,8 +36,10 @@ export default (config = {})=>{
   Component.propTypes = {
     data: PropTypes.string,
     onChange: PropTypes.func,
+    onSelectNode: PropTypes.func,
     showEditor: PropTypes.bool,
     selectMode: PropTypes.bool,
+    selectTypes: PropTypes.arrayOf(PropTypes.string),
     readonlyTitle: PropTypes.string,
     readonlyDescription: PropTypes.string,
   }
